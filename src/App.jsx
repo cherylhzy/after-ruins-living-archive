@@ -4,6 +4,10 @@ import GolestanInfo from "./GolestanInfo";
 import GolestanWhyIncluded from "./GolestanWhyIncluded";
 import GolestanWhatRemains from "./GolestanWhatRemains";
 import GolestanParticipatoryArchive from "./GolestanParticipatoryArchive";
+import OldSummerPalaceInfo from "./OldSummerPalaceInfo";
+import OldSummerPalaceWhyIncluded from "./OldSummerPalaceWhyIncluded";
+import OldSummerPalaceWhatRemains from "./OldSummerPalaceWhatRemains";
+import OldSummerPalaceParticipatoryArchive from "./OldSummerPalaceParticipatoryArchive";
 import { storage } from "./firebase";
 import { ref, uploadBytes, listAll, getDownloadURL } from "firebase/storage";
 
@@ -121,6 +125,81 @@ function App() {
     );
   }
 
+  if (currentPage === "old-summer-palace-info") {
+    return (
+      <OldSummerPalaceInfo
+        onBackHome={() => setCurrentPage("home")}
+        onNavigate={(page) => setCurrentPage(page)}
+      />
+    );
+  }
+
+  if (currentPage === "old-summer-palace-why") {
+    return (
+      <OldSummerPalaceWhyIncluded
+        onBackHome={() => setCurrentPage("home")}
+        onNavigate={(page) => setCurrentPage(page)}
+      />
+    );
+  }
+
+  if (currentPage === "old-summer-palace-remains") {
+    return (
+      <OldSummerPalaceWhatRemains
+        onBackHome={() => setCurrentPage("home")}
+        onNavigate={(page) => setCurrentPage(page)}
+      />
+    );
+  }
+
+  if (currentPage === "old-summer-palace-participatory") {
+    return (
+      <OldSummerPalaceParticipatoryArchive
+        onBackHome={() => setCurrentPage("home")}
+        onNavigate={(page) => setCurrentPage(page)}
+      />
+    );
+  }
+
+  if (currentPage === "old-summer-palace-memory") {
+    return (
+      <div style={pageStyle}>
+        <button
+          style={backToInfoButtonStyle}
+          onClick={() => setCurrentPage("old-summer-palace-participatory")}
+        >
+          ← Back
+        </button>
+
+        <h1 style={archiveTitleStyle}>Old Summer Palace Memory Archive</h1>
+
+        <h3 style={archiveSubtitleStyle}>
+          A Participatory Memory Archive of the Old Summer Palace
+        </h3>
+
+        <p style={descStyle}>
+          This section is reserved for the next stage of the project. It can be
+          developed into a dedicated upload-based reconstruction environment for
+          Yuanmingyuan, parallel to the Golestan Palace archive.
+        </p>
+
+        <div style={mobileNoticeStyle}>
+          Coming soon. For now, the Old Summer Palace section focuses on the
+          historical, visual, and archival pages.
+        </div>
+
+        <div style={{ marginTop: 20 }}>
+          <button
+            style={buttonStyle}
+            onClick={() => setCurrentPage("old-summer-palace-info")}
+          >
+            Return to Old Summer Palace Pages
+          </button>
+        </div>
+      </div>
+    );
+  }
+
   if (currentPage === "golestan-memory") {
     return (
       <div style={pageStyle}>
@@ -138,8 +217,8 @@ function App() {
         </h3>
 
         <p style={descStyle}>
-          Upload memories, files, images, videos, or documents. Each contribution
-          restores one fragment of Golestan Palace.
+          Upload memories, files, images, videos, or documents. Each
+          contribution restores one fragment of Golestan Palace.
         </p>
 
         <h2 style={counterStyle}>
@@ -200,7 +279,9 @@ function App() {
 
         {count >= 100 && (
           <div style={boxStyle(isMobile)}>
-            <h2 style={reconstructedTitleStyle}>The Palace Has Been Reconstructed</h2>
+            <h2 style={reconstructedTitleStyle}>
+              The Palace Has Been Reconstructed
+            </h2>
             <p style={reconstructedTextStyle}>
               Now the archive can open into a future 3D walkthrough.
             </p>
@@ -242,7 +323,11 @@ function App() {
               return (
                 <div key={i} style={fileCard}>
                   {isImage && (
-                    <img src={file.url} alt={file.name} style={mediaPreviewStyle} />
+                    <img
+                      src={file.url}
+                      alt={file.name}
+                      style={mediaPreviewStyle}
+                    />
                   )}
 
                   {isVideo && (
@@ -253,7 +338,11 @@ function App() {
                     <audio src={file.url} controls style={audioPreviewStyle} />
                   )}
 
-                  {isPdf && <p style={{ fontSize: "12px", margin: "8px 0" }}>PDF Document</p>}
+                  {isPdf && (
+                    <p style={{ fontSize: "12px", margin: "8px 0" }}>
+                      PDF Document
+                    </p>
+                  )}
 
                   {!isImage && !isVideo && !isAudio && !isPdf && (
                     <p style={{ fontSize: "12px", margin: "8px 0" }}>File</p>
@@ -311,7 +400,10 @@ function App() {
             </div>
           </button>
 
-          <button style={archiveCardStyle} disabled>
+          <button
+            style={archiveCardStyle}
+            onClick={() => setCurrentPage("old-summer-palace-info")}
+          >
             <div style={archiveTabStyle} />
             <div style={archiveCardInnerStyle}>
               <h3 style={caseTitleStyle}>Old Summer Palace</h3>
@@ -568,9 +660,7 @@ const homeBodyLineStyle = {
 
 const homeGridStyle = (isMobile) => ({
   display: "grid",
-  gridTemplateColumns: isMobile
-    ? "1fr"
-    : "repeat(3, 280px)",
+  gridTemplateColumns: isMobile ? "1fr" : "repeat(3, 280px)",
   gap: "24px",
   justifyContent: "center",
   alignItems: "start",
