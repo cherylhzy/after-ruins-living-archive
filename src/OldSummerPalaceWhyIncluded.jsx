@@ -63,12 +63,22 @@ function OldSummerPalaceWhyIncluded({ onBackHome, onNavigate }) {
           <section style={sectionStyle}>
             <h2 style={sectionTitleStyle(isMobile)}>Why included</h2>
 
-            <div style={heroImageWrapStyle}>
-              <img
-                src="/images/old-summer-palace/old-summer-palace-destruction-before.jpg"
-                alt="Old Summer Palace before destruction"
-                style={heroImageStyle(isMobile)}
-              />
+            <div style={portraitPairGridStyle(isMobile)}>
+              <div style={detailCardStyle}>
+                <img
+                  src="/images/old-summer-palace/old-summer-palace-destruction-before.jpg"
+                  alt="Old Summer Palace before destruction"
+                  style={portraitImageStyle(isMobile)}
+                />
+              </div>
+
+              <div style={detailCardStyle}>
+                <img
+                  src="/images/old-summer-palace/old-summer-palace-destruction-after.jpg"
+                  alt="Old Summer Palace after destruction"
+                  style={portraitImageStyle(isMobile)}
+                />
+              </div>
             </div>
 
             <p style={bodyParagraphStyle(isMobile)}>
@@ -89,15 +99,45 @@ function OldSummerPalaceWhyIncluded({ onBackHome, onNavigate }) {
               themselves. <sup>[1][2]</sup>
             </p>
 
-            <div style={detailGridStyle(isMobile)}>
+            <p style={bodyParagraphStyle(isMobile)}>
+              The 1860 destruction is especially important here because it was
+              not a regrettable side effect but a deliberately staged act with a
+              long rhetorical afterlife. Wikipedia records that Lord Elgin
+              ordered the destruction after the capture, imprisonment, and
+              deaths of members of an Anglo-French delegation; MIT’s essays show
+              how this act was subsequently narrated, moralized, condemned,
+              photographed, and absorbed into a much larger history of looting
+              and memory. In other words, Elgin framed—or claimed—the burning as
+              retaliation, but the result was the systematic devastation of a
+              palace complex that had come to symbolize Qing sovereignty,
+              refinement, and imperial cultural power. <sup>[2][3][4]</sup>
+            </p>
+
+            <div style={singleImageWrapStyle(isMobile)}>
               <div style={detailCardStyle}>
                 <img
                   src="/images/old-summer-palace/old-summer-palace-destruction-history-01.jpg"
                   alt="Old Summer Palace destruction history image 1"
-                  style={detailImageStyle(isMobile)}
+                  style={midImageStyle(isMobile)}
                 />
               </div>
+            </div>
 
+            <p style={bodyParagraphStyle(isMobile)}>
+              Yuanmingyuan is therefore included not simply because it was
+              ruined, but because its ruin was made exemplary: repeatedly used
+              to explain the violence of foreign intervention and the dispersal
+              of Chinese cultural property around the world. The images that
+              survive from before and after destruction do not merely illustrate
+              loss; they also structure how later viewers understand imperial
+              grandeur, military retaliation, and the symbolic targeting of a
+              courtly landscape that condensed Qing power into built form. In
+              this sense, the palace belongs in <em>After Ruins</em> not only as
+              an archaeological absence, but as a continuing visual and political
+              argument about how destruction becomes history. <sup>[2][3][4]</sup>
+            </p>
+
+            <div style={detailGridStyle(isMobile)}>
               <div style={detailCardStyle}>
                 <img
                   src="/images/old-summer-palace/old-summer-palace-destruction-history-02.jpg"
@@ -113,33 +153,7 @@ function OldSummerPalaceWhyIncluded({ onBackHome, onNavigate }) {
                   style={detailImageStyle(isMobile)}
                 />
               </div>
-
-              <div style={detailCardStyle}>
-                <img
-                  src="/images/old-summer-palace/old-summer-palace-destruction-after.jpg"
-                  alt="Old Summer Palace after destruction"
-                  style={detailImageStyle(isMobile)}
-                />
-              </div>
             </div>
-
-            <p style={bodyParagraphStyle(isMobile)}>
-              The 1860 destruction is especially important here because it was
-              not a regrettable side effect but a deliberately staged act with a
-              long rhetorical afterlife. Wikipedia records that Lord Elgin
-              ordered the destruction after the capture, imprisonment, and
-              deaths of members of an Anglo-French delegation; MIT’s essays show
-              how this act was subsequently narrated, moralized, condemned,
-              photographed, and absorbed into a much larger history of looting
-              and memory. In other words, Elgin framed—or claimed—the burning as
-              retaliation, but the result was the systematic devastation of a
-              palace complex that had come to symbolize Qing sovereignty,
-              refinement, and imperial cultural power. Yuanmingyuan is therefore
-              included not simply because it was ruined, but because its ruin was
-              made exemplary: repeatedly used to explain the violence of foreign
-              intervention and the dispersal of Chinese cultural property around
-              the world. <sup>[2][3][4]</sup>
-            </p>
           </section>
 
           <section style={referencesSectionStyle}>
@@ -270,23 +284,38 @@ const sectionTitleStyle = (isMobile) => ({
   fontWeight: 600,
 });
 
-const heroImageWrapStyle = {
-  marginBottom: "24px",
-};
-
-const heroImageStyle = (isMobile) => ({
-  width: "100%",
-  maxHeight: isMobile ? "260px" : "420px",
-  objectFit: "cover",
-  display: "block",
-});
-
 const bodyParagraphStyle = (isMobile) => ({
   fontSize: isMobile ? "18px" : "22px",
   lineHeight: isMobile ? 1.75 : 1.9,
   color: "#333",
   margin: "0 0 24px",
   textAlign: "left",
+});
+
+const portraitPairGridStyle = (isMobile) => ({
+  display: "grid",
+  gridTemplateColumns: isMobile ? "1fr" : "repeat(2, minmax(0, 1fr))",
+  gap: "20px",
+  marginBottom: "24px",
+});
+
+const portraitImageStyle = (isMobile) => ({
+  width: "100%",
+  height: isMobile ? "420px" : "760px",
+  objectFit: "cover",
+  display: "block",
+});
+
+const singleImageWrapStyle = (isMobile) => ({
+  maxWidth: isMobile ? "100%" : "760px",
+  margin: "0 0 24px",
+});
+
+const midImageStyle = (isMobile) => ({
+  width: "100%",
+  height: isMobile ? "320px" : "420px",
+  objectFit: "cover",
+  display: "block",
 });
 
 const detailGridStyle = (isMobile) => ({
@@ -304,7 +333,7 @@ const detailCardStyle = {
 
 const detailImageStyle = (isMobile) => ({
   width: "100%",
-  height: isMobile ? "260px" : "280px",
+  height: isMobile ? "260px" : "300px",
   objectFit: "cover",
   display: "block",
 });
