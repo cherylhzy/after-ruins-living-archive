@@ -33,7 +33,7 @@ function Sidebar({ onNavigate, isMobile }) {
   );
 }
 
-function OldSummerPalaceWhatRemains({ onBackHome, onNavigate }) {
+function OldSummerPalaceWhyIncluded({ onBackHome, onNavigate }) {
   const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
 
   useEffect(() => {
@@ -53,7 +53,7 @@ function OldSummerPalaceWhatRemains({ onBackHome, onNavigate }) {
       <div style={heroStyle(isMobile)}>
         <p style={eyebrowStyle}>AFTER RUINS / CASE STUDY</p>
         <h1 style={titleStyle(isMobile)}>Old Summer Palace</h1>
-        <p style={locationStyle(isMobile)}>What remains</p>
+        <p style={locationStyle(isMobile)}>Why included</p>
       </div>
 
       <div style={contentWrapStyle(isMobile)}>
@@ -61,129 +61,101 @@ function OldSummerPalaceWhatRemains({ onBackHome, onNavigate }) {
 
         <main style={mainStyle}>
           <section style={sectionStyle}>
-            <h2 style={sectionTitleStyle(isMobile)}>What remains</h2>
+            <h2 style={sectionTitleStyle(isMobile)}>Why included</h2>
 
-            <div style={detailGridStyle(isMobile)}>
-              <div style={detailCardStyle}>
-                <img
-                  src="/images/old-summer-palace/old-summer-palace-plan-01.jpg"
-                  alt="Old Summer Palace plan 1"
-                  style={detailImageStyle(isMobile)}
-                />
-              </div>
-
-              <div style={detailCardStyle}>
-                <img
-                  src="/images/old-summer-palace/old-summer-palace-plan-02.jpg"
-                  alt="Old Summer Palace plan 2"
-                  style={detailImageStyle(isMobile)}
-                />
-              </div>
+            <div style={heroImageWrapStyle}>
+              <img
+                src="/images/old-summer-palace/old-summer-palace-destruction-before.jpg"
+                alt="Old Summer Palace before destruction"
+                style={heroImageStyle(isMobile)}
+              />
             </div>
 
             <p style={bodyParagraphStyle(isMobile)}>
-              What remains of Yuanmingyuan is not a single ruin but a fractured
-              field of traces: plans, place-names, excavated foundations,
-              landscape alignments, surviving stonework, dispersed objects, and
-              above all the persistent recognizability of specific ruined forms.
-              The site’s plans are crucial because they restore a sense of scale.
-              They remind viewers that the destruction of 1860 did not erase one
-              pavilion or one façade, but devastated an immense three-garden
-              complex whose total extent far exceeded the portion most visitors
-              now associate with the site. MIT’s essays and Wikipedia together
-              make clear that the European palaces were always only one section
-              of a much larger imperial environment. Yet because those stone
-              remains proved more photographable and legible after destruction,
-              they became the dominant visual shorthand for the whole palace.
-              The plans therefore matter here not simply as orientation devices,
-              but as evidence of the magnitude of what was lost. <sup>[1][2]</sup>
+              The Old Summer Palace enters <em>After Ruins</em> as one of the
+              clearest cases in which architecture, empire, collecting, and
+              historical memory cannot be separated. In life, Yuanmingyuan was a
+              highly controlled imperial world: a courtly landscape where the
+              Qing emperors lived, governed, studied, staged ceremony, and
+              experimented with forms of spatial display ranging from Chinese
+              garden traditions to European-style hydraulic spectacle. In loss,
+              it became something equally consequential: a site through which
+              military violence, colonial collecting, national humiliation,
+              restitution debates, and the politics of historical imagination
+              continue to be argued. This project includes Yuanmingyuan because
+              it is not only a destroyed place; it is also one of the most
+              powerful examples of how destruction reorganizes cultural memory
+              across archives, museums, auctions, textbooks, and ruins
+              themselves. <sup>[1][2]</sup>
             </p>
 
             <div style={detailGridStyle(isMobile)}>
               <div style={detailCardStyle}>
                 <img
-                  src="/images/old-summer-palace/old-summer-palace-ruins-01.jpg"
-                  alt="Old Summer Palace ruins 1"
+                  src="/images/old-summer-palace/old-summer-palace-destruction-history-01.jpg"
+                  alt="Old Summer Palace destruction history image 1"
                   style={detailImageStyle(isMobile)}
                 />
               </div>
 
               <div style={detailCardStyle}>
                 <img
-                  src="/images/old-summer-palace/old-summer-palace-ruins-02.jpg"
-                  alt="Old Summer Palace ruins 2"
+                  src="/images/old-summer-palace/old-summer-palace-destruction-history-02.jpg"
+                  alt="Old Summer Palace destruction history image 2"
                   style={detailImageStyle(isMobile)}
                 />
               </div>
 
               <div style={detailCardStyle}>
                 <img
-                  src="/images/old-summer-palace/old-summer-palace-heads.jpg"
-                  alt="Old Summer Palace zodiac heads"
+                  src="/images/old-summer-palace/old-summer-palace-destruction-history-03.jpg"
+                  alt="Old Summer Palace destruction history image 3"
                   style={detailImageStyle(isMobile)}
                 />
               </div>
 
               <div style={detailCardStyle}>
                 <img
-                  src="/images/old-summer-palace/old-summer-palace-ruins-dashuifa.jpg"
-                  alt="Old Summer Palace Dashuifa ruins"
+                  src="/images/old-summer-palace/old-summer-palace-destruction-after.jpg"
+                  alt="Old Summer Palace after destruction"
                   style={detailImageStyle(isMobile)}
-                />
-              </div>
-
-              <div
-                style={{
-                  ...detailCardStyle,
-                  gridColumn: isMobile ? "auto" : "1 / span 2",
-                }}
-              >
-                <img
-                  src="/images/old-summer-palace/old-summer-palace-dashuifa-engraving.jpg"
-                  alt="Old Summer Palace Dashuifa engraving"
-                  style={wideImageStyle(isMobile)}
                 />
               </div>
             </div>
 
             <p style={bodyParagraphStyle(isMobile)}>
-              The most visible remains today are concentrated in the Xiyang Lou,
-              especially the area around Haiyantang and Dashuifa. This is where
-              architecture, hydraulic engineering, image circulation, and the
-              afterlife of looted objects most clearly intersect. Wikipedia notes
-              that the zodiac heads belonged to a clock-fountain in front of
-              Haiyantang, designed in relation to Jesuit artistic and hydraulic
-              expertise; MIT further shows how engravings and later photographs
-              preserved the forms of the European palaces for later viewers. The
-              bronze heads are especially important because they condense several
-              histories at once: technical ingenuity, court taste, violent
-              seizure, circulation through the art market, and continuing debates
-              over return. Their appearance in auctions means that what remains
-              of Yuanmingyuan is not only in Beijing. It also survives as
-              dispersed material culture, as reproducible images, and as ruins
-              whose fragments continue to stand in for an entire destroyed world.
-              Dashuifa and Haiyantang thus remain central not because they were
-              the whole palace, but because they became the most enduring visual
-              and political emblems of its afterlife. <sup>[2][3][4][5]</sup>
+              The 1860 destruction is especially important here because it was
+              not a regrettable side effect but a deliberately staged act with a
+              long rhetorical afterlife. Wikipedia records that Lord Elgin
+              ordered the destruction after the capture, imprisonment, and
+              deaths of members of an Anglo-French delegation; MIT’s essays show
+              how this act was subsequently narrated, moralized, condemned,
+              photographed, and absorbed into a much larger history of looting
+              and memory. In other words, Elgin framed—or claimed—the burning as
+              retaliation, but the result was the systematic devastation of a
+              palace complex that had come to symbolize Qing sovereignty,
+              refinement, and imperial cultural power. Yuanmingyuan is therefore
+              included not simply because it was ruined, but because its ruin was
+              made exemplary: repeatedly used to explain the violence of foreign
+              intervention and the dispersal of Chinese cultural property around
+              the world. <sup>[2][3][4]</sup>
             </p>
           </section>
 
           <section style={referencesSectionStyle}>
             <h3 style={referencesTitleStyle}>References</h3>
             <ol style={referencesListStyle}>
-              <li>Wikipedia, “Old Summer Palace.”</li>
               <li>
-                MIT Visualizing Cultures, “The Garden of Perfect Brightness—2.”
+                MIT Visualizing Cultures, “The Garden of Perfect Brightness—1.”
               </li>
+              <li>Wikipedia, “Old Summer Palace.”</li>
               <li>
                 MIT Visualizing Cultures, “The Garden of Perfect Brightness—3:
                 Destruction, Looting, and Memory.”
               </li>
               <li>
-                MIT Visualizing Cultures, “Ernst Ohlmer’s 1873 Photos of the
-                Ruins.”
+                MIT Visualizing Cultures, “Opium Wars: The Final Act / Yuanmingyuan.”
               </li>
-              <li>Wikipedia, “Old Summer Palace bronze heads.”</li>
             </ol>
           </section>
         </main>
@@ -298,6 +270,17 @@ const sectionTitleStyle = (isMobile) => ({
   fontWeight: 600,
 });
 
+const heroImageWrapStyle = {
+  marginBottom: "24px",
+};
+
+const heroImageStyle = (isMobile) => ({
+  width: "100%",
+  maxHeight: isMobile ? "260px" : "420px",
+  objectFit: "cover",
+  display: "block",
+});
+
 const bodyParagraphStyle = (isMobile) => ({
   fontSize: isMobile ? "18px" : "22px",
   lineHeight: isMobile ? 1.75 : 1.9,
@@ -321,14 +304,7 @@ const detailCardStyle = {
 
 const detailImageStyle = (isMobile) => ({
   width: "100%",
-  height: isMobile ? "240px" : "260px",
-  objectFit: "cover",
-  display: "block",
-});
-
-const wideImageStyle = (isMobile) => ({
-  width: "100%",
-  height: isMobile ? "240px" : "320px",
+  height: isMobile ? "260px" : "280px",
   objectFit: "cover",
   display: "block",
 });
@@ -354,4 +330,4 @@ const referencesListStyle = {
   textAlign: "left",
 };
 
-export default OldSummerPalaceWhatRemains;
+export default OldSummerPalaceWhyIncluded;
