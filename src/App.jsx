@@ -1,5 +1,3 @@
-const TITLE_FONT = '"Cormorant Garamond", Georgia, serif';
-
 import { useEffect, useMemo, useState } from "react";
 import Walkthrough from "./Walkthrough";
 import GolestanInfo from "./GolestanInfo";
@@ -9,24 +7,31 @@ import GolestanParticipatoryArchive from "./GolestanParticipatoryArchive";
 import { storage } from "./firebase";
 import { ref, uploadBytes, listAll, getDownloadURL } from "firebase/storage";
 
+const TITLE_FONT = '"Cormorant Garamond", Georgia, serif';
+
 function App() {
   const [currentPage, setCurrentPage] = useState("home");
   const [showWalkthrough, setShowWalkthrough] = useState(false);
   const [count, setCount] = useState(0);
   const [files, setFiles] = useState([]);
+  const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
 
   const totalTiles = 100;
   const gridSize = 10;
   const caseName = "golestan";
 
+  useEffect(() => {
+    const onResize = () => setIsMobile(window.innerWidth <= 768);
+    window.addEventListener("resize", onResize);
+    return () => window.removeEventListener("resize", onResize);
+  }, []);
+
   const randomOrder = useMemo(() => {
     const arr = Array.from({ length: totalTiles }, (_, i) => i);
-
     for (let i = arr.length - 1; i > 0; i--) {
       const j = Math.floor(Math.abs(Math.sin(i * 999) * 10000)) % (i + 1);
       [arr[i], arr[j]] = [arr[j], arr[i]];
     }
-
     return arr;
   }, []);
 
@@ -44,10 +49,7 @@ function App() {
       const urls = await Promise.all(
         result.items.map(async (item) => {
           const url = await getDownloadURL(item);
-          return {
-            name: item.name,
-            url,
-          };
+          return { name: item.name, url };
         })
       );
 
@@ -75,7 +77,12 @@ function App() {
   const isRevealed = (index) => revealedTiles.includes(index);
 
   if (showWalkthrough) {
-    return <Walkthrough onExit={() => setShowWalkthrough(false)} />;
+    return (
+      <Walkthrough
+        onExit={() => setShowWalkthrough(false)}
+        isMobile={isMobile}
+      />
+    );
   }
 
   if (currentPage === "golestan-info") {
@@ -151,7 +158,13 @@ function App() {
           </button>
         </div>
 
-        <div style={gridStyle(gridSize)}>
+        {isMobile && (
+          <div style={mobileNoticeStyle}>
+            The 3D walkthrough is currently available on desktop only.
+          </div>
+        )}
+
+        <div style={gridStyle(gridSize, isMobile)}>
           {Array.from({ length: totalTiles }).map((_, index) => {
             const row = Math.floor(index / gridSize);
             const col = index % gridSize;
@@ -164,9 +177,7 @@ function App() {
               <div
                 key={index}
                 onClick={() => {
-                  if (linkedFile) {
-                    window.open(linkedFile.url, "_blank");
-                  }
+                  if (linkedFile) window.open(linkedFile.url, "_blank");
                 }}
                 title={linkedFile ? linkedFile.name : "Unrevealed memory"}
                 style={{
@@ -188,10 +199,8 @@ function App() {
         </div>
 
         {count >= 100 && (
-          <div style={boxStyle}>
-            <h2 style={reconstructedTitleStyle}>
-              The Palace Has Been Reconstructed
-            </h2>
+          <div style={boxStyle(isMobile)}>
+            <h2 style={reconstructedTitleStyle}>The Palace Has Been Reconstructed</h2>
             <p style={reconstructedTextStyle}>
               Now the archive can open into a future 3D walkthrough.
             </p>
@@ -199,15 +208,15 @@ function App() {
               style={buttonStyle}
               onClick={() => setShowWalkthrough(true)}
             >
-              Enter 3D Walkthrough
+              {isMobile ? "Desktop Only" : "Enter 3D Walkthrough"}
             </button>
           </div>
         )}
 
         <div style={{ marginTop: 44 }}>
-          <h2 style={sharedArchiveTitleStyle}>Shared Memory Archive</h2>
+          <h2 style={sharedArchiveTitleStyle(isMobile)}>Shared Memory Archive</h2>
 
-          <div style={galleryStyle}>
+          <div style={galleryStyle(isMobile)}>
             {files.map((file, i) => {
               const lowerName = file.name.toLowerCase();
 
@@ -233,34 +242,18 @@ function App() {
               return (
                 <div key={i} style={fileCard}>
                   {isImage && (
-                    <img
-                      src={file.url}
-                      alt={file.name}
-                      style={mediaPreviewStyle}
-                    />
+                    <img src={file.url} alt={file.name} style={mediaPreviewStyle} />
                   )}
 
                   {isVideo && (
-                    <video
-                      src={file.url}
-                      controls
-                      style={mediaPreviewStyle}
-                    />
+                    <video src={file.url} controls style={mediaPreviewStyle} />
                   )}
 
                   {isAudio && (
-                    <audio
-                      src={file.url}
-                      controls
-                      style={audioPreviewStyle}
-                    />
+                    <audio src={file.url} controls style={audioPreviewStyle} />
                   )}
 
-                  {isPdf && (
-                    <p style={{ fontSize: "12px", margin: "8px 0" }}>
-                      PDF Document
-                    </p>
-                  )}
+                  {isPdf && <p style={{ fontSize: "12px", margin: "8px 0" }}>PDF Document</p>}
 
                   {!isImage && !isVideo && !isAudio && !isPdf && (
                     <p style={{ fontSize: "12px", margin: "8px 0" }}>File</p>
@@ -296,6 +289,7 @@ function App() {
         <h2 style={homeSectionTitleStyle}>
           Destruction, absence, and ongoing memory
         </h2>
+
         <div style={homeBodyWrapStyle}>
           <p style={homeBodyLineStyle}>
             This website extends a physical exhibition on cultural heritage loss.
@@ -305,7 +299,7 @@ function App() {
           </p>
         </div>
 
-        <div style={homeGridStyle}>
+        <div style={homeGridStyle(isMobile)}>
           <button
             style={archiveCardStyle}
             onClick={() => setCurrentPage("golestan-info")}
@@ -369,8 +363,9 @@ const archiveTitleStyle = {
   fontSize: "48px",
   margin: "0 0 4px",
   color: "#1e1e1e",
-  fontFamily: '"Cormorant Garamond", Georgia, serif',
   lineHeight: 1.1,
+  fontFamily: TITLE_FONT,
+  fontWeight: 600,
 };
 
 const archiveSubtitleStyle = {
@@ -380,7 +375,7 @@ const archiveSubtitleStyle = {
   fontSize: "26px",
   lineHeight: 1.2,
   color: "#8c93a3",
-  fontFamily: '"Cormorant Garamond", Georgia, serif',
+  fontFamily: TITLE_FONT,
 };
 
 const descStyle = {
@@ -396,6 +391,7 @@ const counterStyle = {
   fontWeight: "normal",
   fontSize: "24px",
   marginBottom: "14px",
+  fontFamily: TITLE_FONT,
 };
 
 const buttonStyle = {
@@ -408,47 +404,63 @@ const buttonStyle = {
   fontFamily: "Georgia, serif",
 };
 
-const boxStyle = {
+const mobileNoticeStyle = {
+  margin: "18px auto 6px",
+  maxWidth: "520px",
+  padding: "12px 16px",
+  border: "1px solid rgba(58, 51, 40, 0.18)",
+  background: "#fffaf4",
+  color: "#5b584f",
+  fontSize: "15px",
+};
+
+const boxStyle = (isMobile) => ({
   marginTop: 25,
-  padding: 20,
+  padding: isMobile ? 16 : 20,
   background: "#fffaf0",
   border: "1px solid #3a3328",
   display: "inline-block",
-};
+  width: isMobile ? "100%" : "auto",
+  maxWidth: isMobile ? "100%" : "none",
+  boxSizing: "border-box",
+});
 
 const reconstructedTitleStyle = {
   color: "#3a3328",
-  fontFamily: '"Cormorant Garamond", Georgia, serif',
-  fontWeight: "normal",
+  fontFamily: TITLE_FONT,
+  fontWeight: 600,
   fontSize: "20px",
   marginBottom: "10px",
 };
 
 const reconstructedTextStyle = {
-  fontFamily: "Georgia, serif",
+  fontFamily: TITLE_FONT,
   fontSize: "18px",
   color: "#8c93a3",
   marginTop: 0,
   marginBottom: "10px",
 };
 
-const sharedArchiveTitleStyle = {
-  fontSize: "24px",
+const sharedArchiveTitleStyle = (isMobile) => ({
+  fontSize: isMobile ? "20px" : "24px",
   marginBottom: "16px",
   textAlign: "left",
   maxWidth: "900px",
   marginLeft: "auto",
   marginRight: "auto",
-  fontFamily: '"Cormorant Garamond", Georgia, serif',
-};
+  fontFamily: TITLE_FONT,
+  fontWeight: 600,
+});
 
-const galleryStyle = {
+const galleryStyle = (isMobile) => ({
   maxWidth: "900px",
   margin: "20px auto",
   display: "grid",
-  gridTemplateColumns: "repeat(auto-fit, minmax(120px, 1fr))",
+  gridTemplateColumns: isMobile
+    ? "repeat(2, minmax(0, 1fr))"
+    : "repeat(auto-fit, minmax(120px, 1fr))",
   gap: "10px",
-};
+});
 
 const fileCard = {
   padding: "10px",
@@ -479,8 +491,8 @@ const audioPreviewStyle = {
   marginBottom: "8px",
 };
 
-const gridStyle = (gridSize) => ({
-  width: "min(90vw, 600px)",
+const gridStyle = (gridSize, isMobile) => ({
+  width: isMobile ? "100%" : "min(90vw, 600px)",
   aspectRatio: "1 / 1",
   margin: "35px auto",
   display: "grid",
@@ -538,76 +550,7 @@ const homeSectionTitleStyle = {
   textDecoration: "underline",
   textDecorationThickness: "1.2px",
   textUnderlineOffset: "8px",
-};
-
-const homeGridStyle = {
-  display: "grid",
-  gridTemplateColumns: "repeat(3, 280px)",
-  gap: "24px",
-  justifyContent: "center",
-  alignItems: "start",
-};
-
-const archiveCardStyle = {
-  position: "relative",
-  background: "transparent",
-  border: "none",
-  padding: "18px 0 0 0",
-  minHeight: "120px",
-  textAlign: "left",
-  cursor: "pointer",
-  display: "block",
-  width: "100%",
-  maxWidth: "280px",
-};
-
-const archiveCardInnerStyle = {
-  background: "#fffaf4",
-  border: "18px solid #5a4632",
-  borderRadius: "28px",
-  minHeight: "150px",
-  padding: "24px 22px 18px",
-  display: "flex",
-  flexDirection: "column",
-  justifyContent: "space-between",
-  color: "#3a3328",
-  position: "relative",
-  zIndex: 1,
-};
-
-const caseCardStyle = {
-  background: "#fffaf4",
-  border: "1px solid rgba(58, 51, 40, 0.14)",
-  borderRadius: "14px",
-  padding: "28px 24px",
-  minHeight: "180px",
-  textAlign: "left",
-  cursor: "pointer",
-  display: "flex",
-  flexDirection: "column",
-  justifyContent: "space-between",
-  color: "#3a3328",
-};
-
-const archiveTabStyle = {
-  position: "absolute",
-  top: "-2px",
-  left: "7px",
-  width: "126px",
-  height: "30px",
-  background: "#5a4632",
-  borderRadius: "18px 18px 0 0",
-  zIndex: 2,
-};
-
-
-const caseTitleStyle = {
-  fontSize: "24px",
-  margin: 0,
-  color: "#2a241d",
-  fontFamily: TITLE_FONT,
-  fontWeight: 600,
-  lineHeight: 1.08,
+  textAlign: "center",
 };
 
 const homeBodyWrapStyle = {
@@ -623,8 +566,66 @@ const homeBodyLineStyle = {
   margin: "0 0 4px",
 };
 
-const caseLocationStyle = {
+const homeGridStyle = (isMobile) => ({
+  display: "grid",
+  gridTemplateColumns: isMobile
+    ? "1fr"
+    : "repeat(3, 280px)",
+  gap: "24px",
+  justifyContent: "center",
+  alignItems: "start",
+});
+
+const archiveCardStyle = {
+  position: "relative",
+  background: "transparent",
+  border: "none",
+  padding: "18px 0 0 0",
+  minHeight: "120px",
+  textAlign: "left",
+  cursor: "pointer",
+  display: "block",
+  width: "100%",
+  maxWidth: "280px",
+  justifySelf: "center",
+};
+
+const archiveTabStyle = {
+  position: "absolute",
+  top: "-2px",
+  left: "7px",
+  width: "126px",
+  height: "30px",
+  background: "#5a4632",
+  borderRadius: "18px 18px 0 0",
+  zIndex: 2,
+};
+
+const archiveCardInnerStyle = {
+  background: "#fffaf4",
+  border: "18px solid #5a4632",
+  borderRadius: "28px",
+  minHeight: "95px",
+  padding: "18px 20px 14px",
+  display: "flex",
+  flexDirection: "column",
+  justifyContent: "space-between",
+  color: "#3a3328",
+  position: "relative",
+  zIndex: 1,
+};
+
+const caseTitleStyle = {
   fontSize: "18px",
+  margin: 0,
+  color: "#2a241d",
+  fontFamily: TITLE_FONT,
+  fontWeight: 600,
+  lineHeight: 1.08,
+};
+
+const caseLocationStyle = {
+  fontSize: "16px",
   color: "#5b584f",
   margin: 0,
   fontFamily: "Georgia, serif",
